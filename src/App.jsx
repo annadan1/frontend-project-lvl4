@@ -1,6 +1,6 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Navbar, Container } from 'react-bootstrap';
+import { Button, Navbar, Container } from 'react-bootstrap';
 
 import Login from './components/LoginPage.jsx';
 import ChatPage from './components/ChatPage.jsx';
@@ -24,6 +24,14 @@ function AuthProvider({ children }) {
   );
 }
 
+function AuthButton() {
+  const auth = useAuth();
+  if (auth.loggedIn) {
+    return <Button onClick={auth.logOut}>Выйти</Button>;
+  }
+  return null;
+}
+
 function PrivateRoute({ children }) {
   const auth = useAuth();
 
@@ -39,6 +47,7 @@ function App() {
             <Navbar.Brand as={Link} to="/">
               Hexlet Chat
             </Navbar.Brand>
+            <AuthButton />
           </Container>
         </Navbar>
         <Routes>

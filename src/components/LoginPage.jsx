@@ -31,7 +31,7 @@ function Login() {
       setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem(values.username, JSON.stringify(res.data));
+        localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
         navigate('/');
       } catch (err) {
