@@ -1,53 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Nav, Button, Form, InputGroup } from 'react-bootstrap';
-import i18n from 'i18next';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
-import resources from '../locales/index.js';
-import { fetchChats } from '../slices/chatSlice.js';
-import { IconClose, IconSend } from './icon.jsx';
+import { useTranslation } from 'react-i18next';
+import { fetchChats, actions } from '../slices/chatSlice.js';
+import { IconAdd } from './icon.jsx';
+import RenderChanels from './Channels.jsx';
+import InputForMessage from './InputForMessage.jsx';
+import MessageBox from './Messages.jsx';
+import useAuth from '../hooks/authContext.jsx';
 
 function ChatPage() {
-  const i18next = i18n.createInstance();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const auth = useAuth();
+  const headers = auth.getAuthHeader();
 
-  const channelId = useSelector((state) => state.chats.currentChannelId);
-  const [currentChannelId, setCurrentChannelId] = useState(channelId);
-
+  const currentChannelId = useSelector((state) => state.chats.currentChannelId);
   const channels = useSelector((state) => state.chats.channels);
   const currentChannel = channels.find(
     (channel) => channel.id === currentChannelId,
   );
   const allMessages = useSelector((state) => state.chats.messages);
   const currentMessages = allMessages.filter(
-    (message) => message.id === currentChannelId,
+    (m) => m.currentChannelId === currentChannelId,
   );
-  const currentAutor = JSON.parse(localStorage.getItem('userId')).username;
-
-  const getI18N = async () => {
-    await i18next.init({
-      lng: 'ru',
-      debug: false,
-      resources,
-    });
-  };
-  getI18N();
 
   useEffect(() => {
-    dispatch(fetchChats());
+    dispatch(fetchChats(headers));
   }, [dispatch]);
-
-  const formik = useFormik({
-    initialValues: {
-      autor: currentAutor,
-      text: '',
-      channelId: currentChannelId,
-    },
-  });
-
-  const changeCurrentChanelId = (id) => {
-    setCurrentChannelId(id);
-  };
+  const { changeChannelId } = actions;
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -59,74 +39,32 @@ function ChatPage() {
               type="button"
               className="p-0 text-primary btn btn-group-vertical"
             >
-              <IconClose />
+              <IconAdd />
               <span className="visually-hidden">+</span>
             </button>
           </div>
-          <Nav as="ul" className="flex-column nav-pills nav-fill px-2">
-            {channels.map(({ id, name }) => (
-              <Nav.Item as="li" className="w-100" key={id}>
-                <Button
-                  variant={id === currentChannelId ? 'secondary' : 'light'}
-                  className="w-100 rounded-0 text-start"
-                  onClick={() => {
-                    changeCurrentChanelId(id);
-                  }}
-                >
-                  <span className="me-1">#</span>
-                  {name}
-                </Button>
-              </Nav.Item>
-            ))}
-          </Nav>
+          <RenderChanels
+            props={{ channels, currentChannelId, changeChannelId }}
+          />
         </div>
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
-                <b>#{currentChannel?.name}</b>
+                <b>
+                  #
+                  {currentChannel?.name}
+                </b>
               </p>
               <span className="text-muted">
-                {i18next.t('messages.message', {
-                  count: allMessages.length,
+                {t('messages.message', {
+                  count: currentMessages.length,
                 })}
               </span>
             </div>
-            <div
-              id="messages-box"
-              className="chat-messages overflow-auto px-5 "
-            >
-              {allMessages.map((text) => (
-                <div className="text-break mb-2">{text}</div>
-              ))}
-            </div>
+            <MessageBox currentMessages={currentMessages} />
             <div className="mt-auto px-5 py-3">
-              <Form noValidate className="py-1 border rounded-2">
-                <InputGroup
-                  className={
-                    formik.values.text === '' ? 'has-validation' : null
-                  }
-                >
-                  <Form.Control
-                    type="text"
-                    name="text"
-                    id="text"
-                    aria-label="Новое сообщение"
-                    placeholder="Введите сообщение..."
-                    className="border-0 p-0 ps-2"
-                    value={formik.values.text}
-                    onChange={formik.handleChange}
-                  />
-                  <button
-                    type="submit"
-                    className="btn btn-group-vertical"
-                    disabled={formik.values.text === ''}
-                  >
-                    <span className="visually-hidden">Отправить</span>
-                    <IconSend />
-                  </button>
-                </InputGroup>
-              </Form>
+              <InputForMessage currentChannelId={currentChannelId} />
             </div>
           </div>
         </div>

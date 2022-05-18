@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function IconClose() {
+export function IconAdd() {
   return (
     <svg
       className="close"

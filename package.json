@@ -47,9 +47,11 @@
     "react": "^18.0.0",
     "react-bootstrap": "^2.3.1",
     "react-dom": "^18.0.0",
+    "react-i18next": "^11.16.9",
     "react-redux": "^8.0.0-beta.3",
     "react-router-dom": "^6.3.0",
     "regenerator-runtime": "^0.13.9",
+    "socket.io-client": "^4.5.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

@@ -1,28 +1,16 @@
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import {
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from 'react-router-dom';
+import React from 'react';
 import { Button, Navbar, Container } from 'react-bootstrap';
-
 import Login from './components/LoginPage.jsx';
 import ChatPage from './components/ChatPage.jsx';
 import Notfound from './components/NotfoundPage.jsx';
-import AuthContext from './contexts/index.jsx';
-import useAuth from './hooks/index.jsx';
-
-function AuthProvider({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
-
-  return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
+import useAuth from './hooks/authContext.jsx';
+import AuthProvider from './provider/AuthProvider.jsx';
 
 function AuthButton() {
   const auth = useAuth();
@@ -34,7 +22,6 @@ function AuthButton() {
 
 function PrivateRoute({ children }) {
   const auth = useAuth();
-
   return auth.loggedIn ? children : <Navigate to="/login" />;
 }
 

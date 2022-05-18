@@ -2,20 +2,11 @@ import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import routes from '../routes.js';
 
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-  return {};
-};
-
 export const fetchChats = createAsyncThunk(
   'chats/fetchChats',
-  async () => {
+  async (headers) => {
     const { data } = await axios.get(routes.usersPath(), {
-      headers: getAuthHeader(),
+      headers,
     });
     return data;
   },
@@ -24,12 +15,20 @@ export const fetchChats = createAsyncThunk(
 const initialState = {
   channels: [],
   messages: [],
-  currentChannelId: 1,
+  currentChannelId: null,
 };
 
 const chatSlice = createSlice({
   name: 'chats',
   initialState,
+  reducers: {
+    changeChannelId(state, { payload }) {
+      state.currentChannelId = payload;
+    },
+    addMessage: (state, action) => {
+      state.messages = [...state.messages, action.payload];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchChats.fulfilled, (state, action) => {

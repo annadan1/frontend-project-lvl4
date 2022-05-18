@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Card } from 'react-bootstrap';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/authContext.jsx';
 import routes from '../routes.js';
 
 const formSchema = yup.object().shape({
@@ -30,9 +30,8 @@ function Login() {
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
+        const { data } = await axios.post(routes.loginPath(), values);
+        auth.logIn(data);
         navigate('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
