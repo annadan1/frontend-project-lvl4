@@ -21,12 +21,12 @@ function Login() {
     inputRef.current.focus();
   }, []);
 
-  const formik = useFormik({
+  const f = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validation: { formSchema },
+    validationSchema: formSchema,
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
@@ -50,7 +50,7 @@ function Login() {
         <div className="col-12 col-md-4 col-xxl-3">
           <Card className="shadow-sm">
             <Card.Body className="row p-5 justify-content-center">
-              <Form onSubmit={formik.handleSubmit}>
+              <Form onSubmit={f.handleSubmit}>
                 <h1 className="text-center mb-4">Войти</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
@@ -58,10 +58,11 @@ function Login() {
                     autoComplete="username"
                     placeholder="Ваш ник"
                     id="username"
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
+                    onChange={f.handleChange}
+                    value={f.values.username}
                     isInvalid={authFailed}
                     ref={inputRef}
+                    disabled={f.isSubmitting}
                   />
                   <Form.Label>Ваш ник</Form.Label>
                 </Form.Group>
@@ -72,9 +73,10 @@ function Login() {
                     placeholder="Пароль"
                     id="password"
                     type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
+                    onChange={f.handleChange}
+                    value={f.values.password}
                     isInvalid={authFailed}
+                    disabled={f.isSubmitting}
                   />
                   <Form.Label>Пароль</Form.Label>
                   <Form.Control.Feedback type="invalid">

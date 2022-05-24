@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client';
+import * as ReactDOMClient from 'react-dom/client';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -8,31 +8,43 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import App from './App.jsx';
 import chatsReducer, { actions } from './slices/chatSlice.js';
+import modalsReducer from './slices/modalSlice.js';
 import resources from './locales/index.js';
 import SocketProvider from './provider/SocketProvider.jsx';
 
-export default () => {
-  const chat = document.getElementById('chat');
-  const root = createRoot(chat);
+export default async () => {
+  const container = document.getElementById('chat');
+  const root = ReactDOMClient.createRoot(container);
   const socket = io();
   const store = configureStore({
     reducer: {
       chats: chatsReducer,
+      modals: modalsReducer,
     },
   });
 
   const i18next = i18n.createInstance();
-  const getI18N = async () => {
-    await i18next.use(initReactI18next).init({
-      lng: 'ru',
-      debug: false,
-      resources,
-    });
-  };
-  getI18N();
+
+  await i18next.use(initReactI18next).init({
+    lng: 'ru',
+    debug: false,
+    resources,
+  });
 
   socket.on('newMessage', (payload) => {
     store.dispatch(actions.addMessage(payload));
+  });
+
+  socket.on('newChannel', (payload) => {
+    store.dispatch(actions.addChannel(payload));
+  });
+
+  socket.on('renameChannel', (payload) => {
+    store.dispatch(actions.renameChannel(payload));
+  });
+
+  socket.on('removeChannel', (payload) => {
+    store.dispatch(actions.removeChannel(payload));
   });
 
   root.render(

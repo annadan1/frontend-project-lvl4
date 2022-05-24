@@ -1,9 +1,11 @@
 import React from 'react';
 
 const divStyle = {
-  width: '65%',
-  height: '75%',
+  width: '100%',
+  height: '90%',
   position: 'fixed',
+  top: '50px',
+  left: '0',
   display: 'flex',
   'align-items': 'center',
   'align-content': 'center',

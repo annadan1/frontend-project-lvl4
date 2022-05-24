@@ -25,8 +25,23 @@ const chatSlice = createSlice({
     changeChannelId(state, { payload }) {
       state.currentChannelId = payload;
     },
-    addMessage: (state, action) => {
-      state.messages = [...state.messages, action.payload];
+    addMessage: (state, { payload }) => {
+      state.messages = [...state.messages, payload];
+    },
+    addChannel: (state, { payload }) => {
+      state.channels = [...state.channels, payload];
+      state.currentChannelId = payload.id;
+    },
+    renameChannel: (state, { payload }) => {
+      const channelId = payload.id;
+      const channel = state.channels.find((c) => c.id === channelId);
+      if (!channel) return;
+      channel.name = payload.name;
+    },
+    removeChannel: (state, { payload }) => {
+      const channelId = payload.id;
+      state.channels = state.channels.filter((c) => c.id !== channelId);
+      state.messages = state.messages.filter((m) => m.channelId !== channelId);
     },
   },
   extraReducers: (builder) => {

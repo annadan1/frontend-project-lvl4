@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom';
 import React from 'react';
 import { Button, Navbar, Container } from 'react-bootstrap';
-import Login from './components/LoginPage.jsx';
-import ChatPage from './components/ChatPage.jsx';
-import Notfound from './components/NotfoundPage.jsx';
+import Login from './pages/LoginPage.jsx';
+import ChatPage from './pages/ChatPage.jsx';
+import Notfound from './pages/NotfoundPage.jsx';
 import useAuth from './hooks/authContext.jsx';
 import AuthProvider from './provider/AuthProvider.jsx';
 
