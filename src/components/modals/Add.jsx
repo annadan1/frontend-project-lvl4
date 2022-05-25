@@ -48,11 +48,10 @@ function Add({ onHide }) {
               required
               ref={inputRef}
               onChange={f.handleChange}
-              onBlur={f.handleBlur}
               value={f.values.name}
               className="mb-2"
               name="name"
-              isInvalid={f.errors.name && f.touched.name}
+              isInvalid={f.errors.name}
               disabled={f.isSubmitting}
             />
             <Form.Label className="visually-hidden" htmlFor="name">

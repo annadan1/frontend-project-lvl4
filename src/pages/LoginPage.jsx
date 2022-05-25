@@ -63,6 +63,7 @@ function Login() {
                     isInvalid={authFailed}
                     ref={inputRef}
                     disabled={f.isSubmitting}
+                    required
                   />
                   <Form.Label>Ваш ник</Form.Label>
                 </Form.Group>
@@ -77,6 +78,7 @@ function Login() {
                     value={f.values.password}
                     isInvalid={authFailed}
                     disabled={f.isSubmitting}
+                    required
                   />
                   <Form.Label>Пароль</Form.Label>
                   <Form.Control.Feedback type="invalid">

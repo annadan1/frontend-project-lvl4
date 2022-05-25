@@ -1,9 +1,4 @@
-import {
-  Routes,
-  Route,
-  Link,
-  Navigate,
-} from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import React from 'react';
 import { Button, Navbar, Container } from 'react-bootstrap';
 import Login from './pages/LoginPage.jsx';
@@ -11,6 +6,7 @@ import ChatPage from './pages/ChatPage.jsx';
 import Notfound from './pages/NotfoundPage.jsx';
 import useAuth from './hooks/authContext.jsx';
 import AuthProvider from './provider/AuthProvider.jsx';
+import SignUp from './pages/SignUpPage.jsx';
 
 function AuthButton() {
   const auth = useAuth();
@@ -48,6 +44,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Notfound />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
     </AuthProvider>
