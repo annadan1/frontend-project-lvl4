@@ -1,12 +1,14 @@
 import React from 'react';
 import { Nav, Button, Dropdown } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { IconAdd } from './icon.jsx';
 import { actions } from '../slices/modalSlice.js';
 
 function Channels({ props }) {
   const { channels, currentChannelId, changeChannelId } = props;
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const addingModal = () => {
     dispatch(actions.showModal('adding'));
@@ -23,7 +25,7 @@ function Channels({ props }) {
   return (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-        <span>Каналы</span>
+        <span>{t('channels.channels')}</span>
         <button
           type="button"
           className="p-0 text-primary btn btn-group-vertical"
@@ -54,14 +56,14 @@ function Channels({ props }) {
                   className="flex-grow-0"
                   split
                 >
-                  <span className="visually-hidden">Управление каналом</span>
+                  <span className="visually-hidden">{t('channels.management')}</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="#" onClick={() => removeModal(id)}>
-                    Удалить
+                    {t('channels.removeChannel')}
                   </Dropdown.Item>
                   <Dropdown.Item href="#" onClick={() => renameModal(id)}>
-                    Переименовать
+                    {t('channels.renameChannel')}
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

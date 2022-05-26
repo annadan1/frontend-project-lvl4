@@ -1,10 +1,12 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import useSocket from '../../hooks/authSocket.jsx';
 
 function Remove({ onHide }) {
   const socket = useSocket();
+  const { t } = useTranslation();
 
   const currentChannelId = useSelector(
     (state) => state.modals.idForModalAction,
@@ -19,10 +21,10 @@ function Remove({ onHide }) {
   return (
     <>
       <Modal.Header closeButton onClick={onHide}>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('modal.removeChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modal.sure')}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button
@@ -31,7 +33,7 @@ function Remove({ onHide }) {
           value="cancel"
           onClick={onHide}
         >
-          Отменить
+          {t('modal.cancel')}
         </Button>
         <Button
           type="button"
@@ -39,7 +41,7 @@ function Remove({ onHide }) {
           value="submit"
           onClick={generateOnSubmit}
         >
-          Удалить
+          {t('modal.remove')}
         </Button>
       </Modal.Footer>
     </>

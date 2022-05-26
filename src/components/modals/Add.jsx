@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import useSocket from '../../hooks/authSocket.jsx';
 
@@ -11,6 +12,7 @@ function Add({ onHide }) {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+  const { t } = useTranslation();
 
   const channels = useSelector((state) => state.chats.channels);
   const channelsNames = channels.map(({ name }) => name);
@@ -18,12 +20,12 @@ function Add({ onHide }) {
   const schema = yup.object().shape({
     name: yup
       .string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле')
+      .min(3, t('modal.errors.symbols'))
+      .max(20, t('modal.errors.symbols'))
+      .required(t('modal.errors.required'))
       .test(
-        'is-uniq',
-        'Должно быть уникальным',
+        'is-unique',
+        t('modal.errors.unique'),
         (name) => !channelsNames.includes(name),
       ),
   });
@@ -39,7 +41,7 @@ function Add({ onHide }) {
   return (
     <>
       <Modal.Header closeButton onClick={onHide}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
@@ -55,7 +57,7 @@ function Add({ onHide }) {
               disabled={f.isSubmitting}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              Имя канала
+              {t('modal.channelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
               {f.errors.name}
@@ -68,7 +70,7 @@ function Add({ onHide }) {
               value="cancel"
               onClick={onHide}
             >
-              Отменить
+              {t('modal.cancel')}
             </Button>
             <Button
               type="button"
@@ -76,7 +78,7 @@ function Add({ onHide }) {
               value="submit"
               onClick={f.handleSubmit}
             >
-              Отправить
+              {t('modal.send')}
             </Button>
           </Modal.Footer>
         </Form>

@@ -1,5 +1,6 @@
 import { Form, InputGroup } from 'react-bootstrap';
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { IconSend } from './icon.jsx';
 import useSocket from '../hooks/authSocket.jsx';
@@ -7,6 +8,7 @@ import useSocket from '../hooks/authSocket.jsx';
 function Input({ currentChannelId }) {
   const author = JSON.parse(localStorage.getItem('userId')).username;
   const socket = useSocket();
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -37,8 +39,8 @@ function Input({ currentChannelId }) {
           type="text"
           name="text"
           id="text"
-          aria-label="Новое сообщение"
-          placeholder="Введите сообщение..."
+          aria-label={t('message.newMessage')}
+          placeholder={t('message.placeholder')}
           className="border-0 p-0 ps-2"
           value={formik.values.text}
           onChange={formik.handleChange}
@@ -49,7 +51,7 @@ function Input({ currentChannelId }) {
           className="btn btn-group-vertical"
           disabled={formik.values.text === ''}
         >
-          <span className="visually-hidden">Отправить</span>
+          <span className="visually-hidden">{t('message.send')}</span>
           <IconSend />
         </button>
       </InputGroup>

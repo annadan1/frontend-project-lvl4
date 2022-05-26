@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const divStyle = {
   width: '100%',
@@ -18,9 +19,10 @@ const h3Style = {
 };
 
 function NoMatchPage() {
+  const { t } = useTranslation();
   return (
     <div style={divStyle}>
-      <h3 style={h3Style}>404 - Not found</h3>
+      <h3 style={h3Style}>{t('notFound')}</h3>
     </div>
   );
 }

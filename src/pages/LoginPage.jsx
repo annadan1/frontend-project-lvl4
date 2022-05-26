@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Card } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/authContext.jsx';
 import routes from '../routes.js';
 
@@ -20,6 +21,7 @@ function Login() {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+  const { t } = useTranslation();
 
   const f = useFormik({
     initialValues: {
@@ -47,16 +49,16 @@ function Login() {
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-4 col-xxl-3">
+        <div className="col-12 col-md-4 col-xxl-4">
           <Card className="shadow-sm">
-            <Card.Body className="row p-5 justify-content-center">
+            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <Form onSubmit={f.handleSubmit}>
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('loginPage.signIn')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     name="username"
                     autoComplete="username"
-                    placeholder="Ваш ник"
+                    placeholder={t('loginPage.username')}
                     id="username"
                     onChange={f.handleChange}
                     value={f.values.username}
@@ -65,13 +67,13 @@ function Login() {
                     disabled={f.isSubmitting}
                     required
                   />
-                  <Form.Label>Ваш ник</Form.Label>
+                  <Form.Label>{t('loginPage.username')}</Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
                     name="password"
                     autoComplete="current-password"
-                    placeholder="Пароль"
+                    placeholder={t('loginPage.password')}
                     id="password"
                     type="password"
                     onChange={f.handleChange}
@@ -80,9 +82,9 @@ function Login() {
                     disabled={f.isSubmitting}
                     required
                   />
-                  <Form.Label>Пароль</Form.Label>
+                  <Form.Label>{t('loginPage.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid">
-                    Неверные имя пользователя или пароль
+                    {t('loginPage.error')}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Button
@@ -90,14 +92,14 @@ function Login() {
                   variant="outline-primary"
                   className="w-100 mb-3"
                 >
-                  Войти
+                  {t('loginPage.signIn')}
                 </Button>
               </Form>
             </Card.Body>
             <Card.Footer className=" p-4">
               <Card.Text className="text-center">
-                <span>Нет аккаунта? </span>
-                <Link to="/signup">Регистрация</Link>
+                <span>{t('loginPage.noAccount')}</span>
+                <Link to="/signup">{t('loginPage.signUp')}</Link>
               </Card.Text>
             </Card.Footer>
           </Card>

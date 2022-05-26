@@ -1,6 +1,17 @@
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from 'react-router-dom';
 import React from 'react';
-import { Button, Navbar, Container } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Navbar,
+  Container,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Login from './pages/LoginPage.jsx';
 import ChatPage from './pages/ChatPage.jsx';
 import Notfound from './pages/NotfoundPage.jsx';
@@ -10,8 +21,9 @@ import SignUp from './pages/SignUpPage.jsx';
 
 function AuthButton() {
   const auth = useAuth();
+  const { t } = useTranslation();
   if (auth.loggedIn) {
-    return <Button onClick={auth.logOut}>Выйти</Button>;
+    return <Button onClick={auth.logOut}>{t('signOut')}</Button>;
   }
   return null;
 }
@@ -22,6 +34,8 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
+  const { i18n } = useTranslation();
+  const toggle = (lng) => i18n.changeLanguage(lng);
   return (
     <AuthProvider>
       <div className="d-flex flex-column h-100">
@@ -30,6 +44,30 @@ function App() {
             <Navbar.Brand as={Link} to="/">
               Hexlet Chat
             </Navbar.Brand>
+            <ButtonGroup
+              size="sm"
+              style={{ display: 'block', 'margin-left': 'auto' }}
+            >
+              <Button
+                id="ru"
+                variant="link"
+                onClick={(e) => {
+                  toggle(e.target.id);
+                }}
+              >
+                Ru
+              </Button>
+              /
+              <Button
+                id="en"
+                variant="link"
+                onClick={(e) => {
+                  toggle(e.target.id);
+                }}
+              >
+                En
+              </Button>
+            </ButtonGroup>
             <AuthButton />
           </Container>
         </Navbar>
