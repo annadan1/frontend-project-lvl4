@@ -6,6 +6,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { io } from 'socket.io-client';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
 import App from './App.jsx';
 import chatsReducer, { actions } from './slices/chatSlice.js';
 import modalsReducer from './slices/modalSlice.js';
@@ -13,6 +15,7 @@ import resources from './locales/index.js';
 import SocketProvider from './provider/SocketProvider.jsx';
 
 export default async () => {
+  injectStyle();
   const container = document.getElementById('chat');
   const root = ReactDOMClient.createRoot(container);
   const socket = io();
@@ -54,6 +57,7 @@ export default async () => {
           <App />
         </SocketProvider>
       </Provider>
+      <ToastContainer />
     </BrowserRouter>,
   );
 };

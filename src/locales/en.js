@@ -58,5 +58,10 @@ export default {
       send: 'Send',
     },
     signOut: 'Sign out',
+    toasts: {
+      add: 'Channel created',
+      remove: 'Сhannel removed',
+      rename: 'Сhannel renamed',
+    },
   },
 };

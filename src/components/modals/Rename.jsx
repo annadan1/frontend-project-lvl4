@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import useSocket from '../../hooks/authSocket.jsx';
@@ -37,7 +38,12 @@ function Rename({ onHide }) {
   const f = useFormik({
     initialValues: { name: currentChannel.name },
     onSubmit: async ({ name }) => {
-      await socket.renameChannel({ id: currentChannelId, name });
+      try {
+        await socket.renameChannel({ id: currentChannelId, name });
+        toast.success(t('toasts.rename'));
+      } catch {
+        toast.error(t('toasts.error.rename'));
+      }
       onHide();
     },
     validationSchema: schema,

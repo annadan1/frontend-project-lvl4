@@ -46,7 +46,7 @@ function App() {
             </Navbar.Brand>
             <ButtonGroup
               size="sm"
-              style={{ display: 'block', 'margin-left': 'auto' }}
+              style={{ display: 'block', marginLeft: 'auto' }}
             >
               <Button
                 id="ru"

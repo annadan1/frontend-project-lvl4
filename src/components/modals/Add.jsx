@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import useSocket from '../../hooks/authSocket.jsx';
 
@@ -29,10 +30,16 @@ function Add({ onHide }) {
         (name) => !channelsNames.includes(name),
       ),
   });
+
   const f = useFormik({
     initialValues: { name: '' },
     onSubmit: async ({ name }) => {
-      await socket.addChannel({ name });
+      try {
+        await socket.addChannel({ name });
+        toast.success(t('toasts.add'));
+      } catch {
+        toast.error(t('toasts.error.add'));
+      }
       onHide();
     },
     validationSchema: schema,

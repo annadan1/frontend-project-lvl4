@@ -1,12 +1,15 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useSocket from '../../hooks/authSocket.jsx';
+import { actions } from '../../slices/chatSlice.js';
 
 function Remove({ onHide }) {
   const socket = useSocket();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const currentChannelId = useSelector(
     (state) => state.modals.idForModalAction,
@@ -14,7 +17,13 @@ function Remove({ onHide }) {
 
   const generateOnSubmit = async (e) => {
     e.preventDefault();
-    await socket.removeChannel({ id: currentChannelId });
+    try {
+      await socket.removeChannel({ id: currentChannelId });
+      dispatch(actions.changeChannelId(1));
+      toast.success(t('toasts.remove'));
+    } catch {
+      toast.error(t('toasts.error.remove'));
+    }
     onHide();
   };
 
