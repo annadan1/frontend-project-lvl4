@@ -9,6 +9,7 @@ import { initReactI18next } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
 import filter from 'leo-profanity';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import App from './App.jsx';
 import chatsReducer, { actions } from './slices/chatSlice.js';
 import modalsReducer from './slices/modalSlice.js';
@@ -17,9 +18,13 @@ import SocketProvider from './provider/SocketProvider.jsx';
 
 export default async () => {
   injectStyle();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
+  const i18next = i18n.createInstance();
+  const socket = io();
   const container = document.getElementById('chat');
   const root = ReactDOMClient.createRoot(container);
-  const socket = io();
+
   const store = configureStore({
     reducer: {
       chats: chatsReducer,
@@ -27,16 +32,20 @@ export default async () => {
     },
   });
 
-  filter.add(filter.getDictionary('en'));
-  filter.add(filter.getDictionary('ru'));
-
-  const i18next = i18n.createInstance();
-
   await i18next.use(initReactI18next).init({
     lng: 'ru',
     debug: false,
     resources,
   });
+
+  const rollbarConfig = {
+    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+      environment: 'production',
+    },
+  };
 
   socket.on('newMessage', (payload) => {
     store.dispatch(actions.addMessage(payload));
@@ -56,12 +65,16 @@ export default async () => {
 
   root.render(
     <BrowserRouter>
-      <Provider store={store}>
-        <SocketProvider socket={socket}>
-          <App />
-        </SocketProvider>
-      </Provider>
-      <ToastContainer />
+      <RollbarProvider config={rollbarConfig}>
+        <ErrorBoundary>
+          <Provider store={store}>
+            <SocketProvider socket={socket}>
+              <App />
+            </SocketProvider>
+          </Provider>
+          <ToastContainer />
+        </ErrorBoundary>
+      </RollbarProvider>
     </BrowserRouter>,
   );
 };

@@ -22,6 +22,19 @@ function Channels({ props }) {
     dispatch(actions.changeIdForModalAction(id));
   };
 
+  const getButton = (id, name) => (
+    <Button
+      variant={id === currentChannelId ? 'secondary' : 'light'}
+      className="w-100 rounded-0 text-start text-truncate"
+      onClick={() => {
+        dispatch(changeChannelId(id));
+      }}
+    >
+      <span className="me-1">#</span>
+      {name}
+    </Button>
+  );
+
   return (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
@@ -40,44 +53,28 @@ function Channels({ props }) {
           <Nav.Item as="li" className="w-100" key={id}>
             {removable ? (
               <Dropdown className="d-flex btn-group">
-                <Button
-                  variant={id === currentChannelId ? 'secondary' : 'light'}
-                  className="w-100 rounded-0 text-start text-truncate"
-                  onClick={() => {
-                    dispatch(changeChannelId(id));
-                  }}
-                >
-                  <span className="me-1">#</span>
-                  {name}
-                </Button>
+                {getButton(id, name)}
                 <Dropdown.Toggle
                   id="dropdown-autoclose-true"
                   variant={id === currentChannelId ? 'secondary' : 'light'}
                   className="flex-grow-0"
                   split
                 >
-                  <span className="visually-hidden">{t('channels.management')}</span>
+                  <span className="visually-hidden">
+                    {t('channels.management')}
+                  </span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#" onClick={() => removeModal(id)}>
+                  <Dropdown.Item onClick={() => removeModal(id)}>
                     {t('channels.removeChannel')}
                   </Dropdown.Item>
-                  <Dropdown.Item href="#" onClick={() => renameModal(id)}>
+                  <Dropdown.Item onClick={() => renameModal(id)}>
                     {t('channels.renameChannel')}
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
-              <Button
-                variant={id === currentChannelId ? 'secondary' : 'light'}
-                className="w-100 rounded-0 text-start"
-                onClick={() => {
-                  dispatch(changeChannelId(id));
-                }}
-              >
-                <span className="me-1">#</span>
-                {name}
-              </Button>
+              getButton(id, name)
             )}
           </Nav.Item>
         ))}
