@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import filter from 'leo-profanity';
 
 function Message({ currentMessages }) {
   const messagesBoxRef = useRef();
@@ -16,7 +17,7 @@ function Message({ currentMessages }) {
       {currentMessages.map(({ author, text, id }) => (
         <div className="text-break mb-2" key={id}>
           <b>{author}</b>
-          {`: ${text}`}
+          {`: ${filter.clean(text)}`}
         </div>
       ))}
     </div>

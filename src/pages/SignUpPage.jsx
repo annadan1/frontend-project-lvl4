@@ -78,9 +78,8 @@ function SignUp() {
                     placeholder={t('signUp.username')}
                     id="username"
                     onChange={f.handleChange}
-                    onBlur={f.handleBlur}
                     value={f.values.username}
-                    isInvalid={(f.errors.username && f.touched.username) || registrationFailed}
+                    isInvalid={(f.errors.username && f.values.username !== '') || registrationFailed}
                     ref={inputRef}
                     disabled={f.isSubmitting}
                     required
@@ -98,9 +97,8 @@ function SignUp() {
                     id="password"
                     type="password"
                     onChange={f.handleChange}
-                    onBlur={f.handleBlur}
                     value={f.values.password}
-                    isInvalid={(f.errors.password && f.touched.password) || registrationFailed}
+                    isInvalid={(f.errors.password && f.values.password !== '') || registrationFailed}
                     disabled={f.isSubmitting}
                     required
                   />

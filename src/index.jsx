@@ -8,6 +8,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
+import filter from 'leo-profanity';
 import App from './App.jsx';
 import chatsReducer, { actions } from './slices/chatSlice.js';
 import modalsReducer from './slices/modalSlice.js';
@@ -25,6 +26,9 @@ export default async () => {
       modals: modalsReducer,
     },
   });
+
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
 
   const i18next = i18n.createInstance();
 
