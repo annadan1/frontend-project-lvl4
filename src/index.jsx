@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import { injectStyle } from 'react-toastify/dist/inject-style';
+import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import App from './App.jsx';
@@ -17,7 +17,6 @@ import resources from './locales/index.js';
 import SocketProvider from './provider/SocketProvider.jsx';
 
 export default async () => {
-  injectStyle();
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
   const i18next = i18n.createInstance();
