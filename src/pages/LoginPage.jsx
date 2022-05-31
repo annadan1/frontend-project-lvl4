@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../hooks/authContext.jsx';
 import routes from '../routes.js';
 
@@ -41,6 +42,7 @@ function Login() {
           inputRef.current.select();
           return;
         }
+        toast.error(t('toasts.error.connectionError'));
         throw err;
       }
     },
@@ -64,7 +66,6 @@ function Login() {
                     value={f.values.username}
                     isInvalid={authFailed}
                     ref={inputRef}
-                    disabled={f.isSubmitting}
                     required
                   />
                   <Form.Label>{t('loginPage.username')}</Form.Label>
@@ -79,7 +80,6 @@ function Login() {
                     onChange={f.handleChange}
                     value={f.values.password}
                     isInvalid={authFailed}
-                    disabled={f.isSubmitting}
                     required
                   />
                   <Form.Label>{t('loginPage.password')}</Form.Label>
@@ -91,6 +91,7 @@ function Login() {
                   type="submit"
                   variant="outline-primary"
                   className="w-100 mb-3"
+                  disabled={f.isSubmitting}
                 >
                   {t('loginPage.signIn')}
                 </Button>

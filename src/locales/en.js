@@ -62,6 +62,7 @@ export default {
       add: 'Channel created',
       remove: 'Сhannel removed',
       rename: 'Сhannel renamed',
+      connectionError: 'Server connection lost',
     },
   },
 };

@@ -38,6 +38,7 @@ function Add({ onHide }) {
         await socket.addChannel({ name });
         toast.success(t('toasts.add'));
       } catch {
+        inputRef.current.select();
         toast.error(t('toasts.error.add'));
       }
       onHide();
@@ -61,7 +62,6 @@ function Add({ onHide }) {
               className="mb-2"
               name="name"
               isInvalid={f.errors.name}
-              disabled={f.isSubmitting}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
               {t('modal.channelName')}
@@ -76,6 +76,7 @@ function Add({ onHide }) {
               variant="secondary"
               value="cancel"
               onClick={onHide}
+              disabled={f.isSubmitting}
             >
               {t('modal.cancel')}
             </Button>
@@ -84,6 +85,7 @@ function Add({ onHide }) {
               variant="primary"
               value="submit"
               onClick={f.handleSubmit}
+              disabled={f.isSubmitting}
             >
               {t('modal.send')}
             </Button>

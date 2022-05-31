@@ -81,7 +81,6 @@ function SignUp() {
                     value={f.values.username}
                     isInvalid={(f.errors.username && f.values.username !== '') || registrationFailed}
                     ref={inputRef}
-                    disabled={f.isSubmitting}
                     required
                   />
                   <Form.Label>{t('signUp.username')}</Form.Label>
@@ -99,7 +98,6 @@ function SignUp() {
                     onChange={f.handleChange}
                     value={f.values.password}
                     isInvalid={(f.errors.password && f.values.password !== '') || registrationFailed}
-                    disabled={f.isSubmitting}
                     required
                   />
                   <Form.Label>{t('signUp.password')}</Form.Label>
@@ -117,7 +115,6 @@ function SignUp() {
                     onChange={f.handleChange}
                     value={f.values.confirmPassword}
                     isInvalid={f.errors.confirmPassword || registrationFailed}
-                    disabled={f.isSubmitting}
                     required
                   />
                   <Form.Label>{t('signUp.confirmPassword')}</Form.Label>
@@ -129,6 +126,7 @@ function SignUp() {
                   type="submit"
                   variant="outline-primary"
                   className="w-100 mb-3"
+                  disabled={f.isSubmitting}
                 >
                   {t('signUp.buttonSubmit')}
                 </Button>

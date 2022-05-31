@@ -11,7 +11,7 @@ function Rename({ onHide }) {
   const socket = useSocket();
   const inputRef = useRef();
   useEffect(() => {
-    inputRef.current.select();
+    inputRef.current.focus();
   }, []);
   const { t } = useTranslation();
 
@@ -42,6 +42,7 @@ function Rename({ onHide }) {
         await socket.renameChannel({ id: currentChannelId, name });
         toast.success(t('toasts.rename'));
       } catch {
+        inputRef.current.select();
         toast.error(t('toasts.error.rename'));
       }
       onHide();
@@ -65,7 +66,6 @@ function Rename({ onHide }) {
               className="mb-2"
               name="name"
               isInvalid={f.errors.name}
-              disabled={f.isSubmitting}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
               {t('modal.channelName')}
@@ -82,6 +82,7 @@ function Rename({ onHide }) {
           variant="secondary"
           value="cancel"
           onClick={onHide}
+          disabled={f.isSubmitting}
         >
           {t('modal.cancel')}
         </Button>
@@ -90,6 +91,7 @@ function Rename({ onHide }) {
           variant="primary"
           value="submit"
           onClick={f.handleSubmit}
+          disabled={f.isSubmitting}
         >
           {t('modal.send')}
         </Button>
