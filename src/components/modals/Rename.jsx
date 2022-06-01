@@ -64,6 +64,7 @@ function Rename({ onHide }) {
               value={f.values.name}
               className="mb-2"
               name="name"
+              id="name"
               isInvalid={f.errors.name}
               disabled={f.isSubmitting}
             />
