@@ -16,7 +16,7 @@ function SignUp() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [registrationFailed, setRegistrationFailed] = useState(false);
+  const [signupFailed, setSignupFailed] = useState(false);
 
   const f = useFormik({
     initialValues: {
@@ -39,7 +39,7 @@ function SignUp() {
         .oneOf([yup.ref('password')], t('signUp.errors.confirmPassword')),
     }),
     onSubmit: async ({ username, password }) => {
-      setRegistrationFailed(false);
+      setSignupFailed(false);
       try {
         const { data } = await axios.post(routes.signUpPath(), {
           username,
@@ -49,12 +49,12 @@ function SignUp() {
         navigate('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
-          setRegistrationFailed(true);
+          setSignupFailed(true);
           inputRef.current.select();
           return;
         }
         if (err.response.status === 409) {
-          setRegistrationFailed(true);
+          setSignupFailed(true);
           inputRef.current.select();
           return;
         }
@@ -79,14 +79,21 @@ function SignUp() {
                     id="username"
                     onChange={f.handleChange}
                     value={f.values.username}
-                    isInvalid={(f.errors.username && f.values.username !== '') || registrationFailed}
+                    isInvalid={
+                      (f.errors.username && f.values.username !== '') || signupFailed
+                    }
                     ref={inputRef}
+                    disabled={f.isSubmitting}
                     required
                   />
-                  <Form.Label>{t('signUp.username')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {f.errors.username}
-                  </Form.Control.Feedback>
+                  <Form.Label htmlFor="username">
+                    {t('signUp.username')}
+                  </Form.Label>
+                  {f.errors.username ? (
+                    <Form.Control.Feedback type="invalid" tooltip>
+                      {f.errors.username}
+                    </Form.Control.Feedback>
+                  ) : null}
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
@@ -97,13 +104,20 @@ function SignUp() {
                     type="password"
                     onChange={f.handleChange}
                     value={f.values.password}
-                    isInvalid={(f.errors.password && f.values.password !== '') || registrationFailed}
+                    isInvalid={
+                      (f.errors.password && f.values.password !== '') || signupFailed
+                    }
+                    disabled={f.isSubmitting}
                     required
                   />
-                  <Form.Label>{t('signUp.password')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {f.errors.password}
-                  </Form.Control.Feedback>
+                  <Form.Label htmlFor="password">
+                    {t('signUp.password')}
+                  </Form.Label>
+                  {f.errors.password ? (
+                    <Form.Control.Feedback type="invalid" tooltip>
+                      {f.errors.password}
+                    </Form.Control.Feedback>
+                  ) : null}
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -114,19 +128,23 @@ function SignUp() {
                     type="password"
                     onChange={f.handleChange}
                     value={f.values.confirmPassword}
-                    isInvalid={f.errors.confirmPassword || registrationFailed}
+                    isInvalid={f.errors.confirmPassword || signupFailed}
+                    disabled={f.isSubmitting}
                     required
                   />
-                  <Form.Label>{t('signUp.confirmPassword')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {f.errors.confirmPassword || t('signUp.errors.unique')}
-                  </Form.Control.Feedback>
+                  <Form.Label htmlFor="confirmPassword">
+                    {t('signUp.confirmPassword')}
+                  </Form.Label>
+                  {f.errors.confirmPassword || signupFailed ? (
+                    <Form.Control.Feedback type="invalid" tooltip>
+                      {f.errors.confirmPassword || t('signUp.errors.unique')}
+                    </Form.Control.Feedback>
+                  ) : null}
                 </Form.Group>
                 <Button
                   type="submit"
                   variant="outline-primary"
                   className="w-100 mb-3"
-                  disabled={f.isSubmitting}
                 >
                   {t('signUp.buttonSubmit')}
                 </Button>

@@ -1,4 +1,3 @@
-import * as ReactDOMClient from 'react-dom/client';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -16,13 +15,15 @@ import modalsReducer from './slices/modalSlice.js';
 import resources from './locales/index.js';
 import SocketProvider from './provider/SocketProvider.jsx';
 
+if (process.env.NODE_ENV !== 'production') {
+  localStorage.debug = 'chat:*';
+}
+
 export default async () => {
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
   const i18next = i18n.createInstance();
   const socket = io();
-  const container = document.getElementById('chat');
-  const root = ReactDOMClient.createRoot(container);
 
   const store = configureStore({
     reducer: {
@@ -62,7 +63,7 @@ export default async () => {
     store.dispatch(actions.removeChannel(payload));
   });
 
-  root.render(
+  return (
     <BrowserRouter>
       <RollbarProvider config={rollbarConfig}>
         <ErrorBoundary>
@@ -74,6 +75,6 @@ export default async () => {
           <ToastContainer />
         </ErrorBoundary>
       </RollbarProvider>
-    </BrowserRouter>,
+    </BrowserRouter>
   );
 };

@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import useAuth from '../hooks/authContext.jsx';
 import routes from '../routes.js';
 
@@ -42,7 +41,6 @@ function Login() {
           inputRef.current.select();
           return;
         }
-        toast.error(t('toasts.error.connectionError'));
         throw err;
       }
     },
@@ -66,9 +64,12 @@ function Login() {
                     value={f.values.username}
                     isInvalid={authFailed}
                     ref={inputRef}
+                    disabled={f.isSubmitting}
                     required
                   />
-                  <Form.Label>{t('loginPage.username')}</Form.Label>
+                  <Form.Label htmlFor="username">
+                    {t('loginPage.username')}
+                  </Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -82,10 +83,14 @@ function Login() {
                     isInvalid={authFailed}
                     required
                   />
-                  <Form.Label>{t('loginPage.password')}</Form.Label>
-                  <Form.Control.Feedback type="invalid">
-                    {t('loginPage.error')}
-                  </Form.Control.Feedback>
+                  <Form.Label htmlFor="password">
+                    {t('loginPage.password')}
+                  </Form.Label>
+                  {authFailed ? (
+                    <Form.Control.Feedback type="invalid">
+                      {t('loginPage.error')}
+                    </Form.Control.Feedback>
+                  ) : null}
                 </Form.Group>
                 <Button
                   type="submit"
