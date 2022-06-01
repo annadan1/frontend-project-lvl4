@@ -1,5 +1,5 @@
 import React from 'react';
-import SocketContext from '../context/authSocket.jsx';
+import SocketContext from '../context/socketContext.jsx';
 
 const promisify = (socketFunction) => (...args) => new Promise((resolve, reject) => {
   socketFunction(...args, ({ status, data }) => {

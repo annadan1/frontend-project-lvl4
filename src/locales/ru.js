@@ -61,7 +61,7 @@ export default {
     signOut: 'Выйти',
     toasts: {
       add: 'Канал создан',
-      remove: 'Канал удален',
+      remove: 'Канал удалён',
       rename: 'Канал переименован',
       error: {
         add: 'Не удалось создать канал',

@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { IconSend } from './icon.jsx';
-import useSocket from '../hooks/authSocket.jsx';
+import useSocket from '../hooks/socketContext.jsx';
 
 function Input({ currentChannelId }) {
   const author = JSON.parse(localStorage.getItem('userId')).username;

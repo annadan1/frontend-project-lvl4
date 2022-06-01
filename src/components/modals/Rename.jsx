@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
-import useSocket from '../../hooks/authSocket.jsx';
+import useSocket from '../../hooks/socketContext.jsx';
 
 function Rename({ onHide }) {
   const socket = useSocket();
@@ -76,26 +76,26 @@ function Rename({ onHide }) {
               </Form.Control.Feedback>
             ) : null}
           </Form.Group>
+          <div className="d-flex justify-content-end">
+            <Button
+              type="button"
+              variant="secondary"
+              value="cancel"
+              onClick={onHide}
+            >
+              {t('modal.cancel')}
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              value="submit"
+              onClick={f.handleSubmit}
+            >
+              {t('modal.send')}
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="button"
-          variant="secondary"
-          value="cancel"
-          onClick={onHide}
-        >
-          {t('modal.cancel')}
-        </Button>
-        <Button
-          type="button"
-          variant="primary"
-          value="submit"
-          onClick={f.handleSubmit}
-        >
-          {t('modal.send')}
-        </Button>
-      </Modal.Footer>
     </>
   );
 }

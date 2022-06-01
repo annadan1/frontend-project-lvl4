@@ -61,6 +61,7 @@ export default async () => {
 
   socket.on('removeChannel', (payload) => {
     store.dispatch(actions.removeChannel(payload));
+    store.dispatch(actions.changeChannelId(1));
   });
 
   return (
