@@ -30,7 +30,9 @@ function Input({ currentChannelId }) {
   const inputRef = useRef();
 
   useEffect(() => {
-    inputRef.current.focus();
+    if (showEmojiPicker === false) {
+      inputRef.current.focus();
+    }
   });
 
   return (
