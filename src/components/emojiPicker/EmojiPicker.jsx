@@ -7,6 +7,7 @@ import en from './i18n/en.json';
 function OnClickOutside(ref, handler) {
   useEffect(() => {
     const listener = (event) => {
+      console.log(ref.current);
       if (!ref.current || ref.current.contains(event.target)) {
         return;
       }
@@ -37,16 +38,18 @@ function MyEmojiPicker(props) {
   };
 
   return (
-    <div ref={ref} style={{ textAlign: 'right' }}>
-      <Picker
-        showPreview={false}
-        showSkinTones={false}
-        style={{ textAlign: 'start' }}
-        onSelect={(emojiTag) => addEmoji(emojiTag)}
-        i18n={locale === 'ru' ? ru : en}
-        native
-        autoFocus
-      />
+    <div style={{ textAlign: 'right' }}>
+      <div ref={ref} style={{ float: 'right', display: 'contents' }}>
+        <Picker
+          showPreview={false}
+          showSkinTones={false}
+          style={{ textAlign: 'start' }}
+          onSelect={(emojiTag) => addEmoji(emojiTag)}
+          i18n={locale === 'ru' ? ru : en}
+          native
+          autoFocus
+        />
+      </div>
     </div>
   );
 }
