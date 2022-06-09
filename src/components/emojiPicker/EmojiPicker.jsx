@@ -7,10 +7,6 @@ import en from './i18n/en.json';
 function OnClickOutside(ref, handler) {
   useEffect(() => {
     const listener = (event) => {
-<<<<<<< HEAD
-      console.log(ref.current);
-=======
->>>>>>> 8aff9eafaf519e92ab764bb19ff90b891e0d1ddb
       if (!ref.current || ref.current.contains(event.target)) {
         return;
       }
