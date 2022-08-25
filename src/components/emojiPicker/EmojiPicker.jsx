@@ -46,7 +46,6 @@ function MyEmojiPicker(props) {
           onSelect={(emojiTag) => addEmoji(emojiTag)}
           i18n={locale === 'ru' ? ru : en}
           native
-          autoFocus
         />
       </div>
     </div>

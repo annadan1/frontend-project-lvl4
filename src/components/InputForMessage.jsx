@@ -12,6 +12,7 @@ function Input({ currentChannelId }) {
   const [inputValue, setInputValue] = useState('');
   const socket = useSocket();
   const { i18n, t } = useTranslation();
+  const inputRef = useRef();
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -22,17 +23,17 @@ function Input({ currentChannelId }) {
     try {
       await socket.addMessage({ author, text: inputValue, currentChannelId });
       setInputValue('');
+      setShowEmojiPicker(!showEmojiPicker);
     } catch {
       toast.error(t('toasts.error.send'));
     }
   };
 
-  const inputRef = useRef();
-
   useEffect(() => {
-    if (showEmojiPicker === false) {
-      inputRef.current.focus();
+    if (showEmojiPicker) {
+      inputRef.current.selectionStart = inputValue.length;
     }
+    inputRef.current.focus();
   });
 
   return (
